@@ -1,6 +1,7 @@
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.*;
 
 class Lotto {
 
@@ -8,7 +9,7 @@ class Lotto {
 
     public Integer numberSize;
 
-    public void Start() {
+    public void Start() throws IOException {
         Scanner sc = new Scanner(System.in);
         Integer numbersToDraw = 0;
         Integer numberList = 0;
@@ -43,13 +44,22 @@ class Lotto {
 
         init(numberList);
         System.out.println("Number pool: " + numbers);
-        System.out.println("\n" + "Your " + numbersToDraw + " draw numbers are:");
+        System.out.println("\n" + "Your " + numbersToDraw + " draw numbers from number pool are:");
         System.out.println();
 
-        for (int i = 0; i < numbersToDraw; i++) {
-            System.out.println(draw());
-        }
+        List<Integer> sortedNumbers = new ArrayList<>();
 
+        for (int i = 0; i < numbersToDraw; i++) {
+            sortedNumbers.add(draw());
+        }
+        Collections.sort(sortedNumbers);
+        System.out.println(sortedNumbers);
+
+        File file = new File("lottoNumbers.txt");
+        file.createNewFile();
+        PrintWriter writer = new PrintWriter(file);
+        writer.println("Your " + numbersToDraw + " draw numbers are: " + sortedNumbers);
+        writer.close();
     }
 
     // ----  Creating number collection  ----------------------------------------------
