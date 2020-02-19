@@ -9,7 +9,7 @@ class Lotto {
 
     public Integer numberSize;
 
-    public void Start() throws IOException {
+    public void Start() throws IOException, InterruptedException {
         Scanner sc = new Scanner(System.in);
         Integer numbersToDraw = 0;
         Integer numberList = 0;
@@ -45,16 +45,19 @@ class Lotto {
         init(numberList);
         System.out.println("Number pool: " + numbers);
         System.out.println("\n" + "Your " + numbersToDraw + " draw numbers from number pool are:");
-        System.out.println();
 
         List<Integer> sortedNumbers = new ArrayList<>();
-
+        // ---- Sort numbers from minimum and displays them in an interval of one second
         for (int i = 0; i < numbersToDraw; i++) {
             sortedNumbers.add(draw());
         }
         Collections.sort(sortedNumbers);
-        System.out.println(sortedNumbers);
+        for (int i = 0; i < numbersToDraw; i++) {
+            Thread.sleep(1000);
+            System.out.println(sortedNumbers.get(i));
+        }
 
+        // ---- Writes out numbers to lottoNumbers.txt
         File file = new File("lottoNumbers.txt");
         file.createNewFile();
         PrintWriter writer = new PrintWriter(file);
@@ -62,7 +65,7 @@ class Lotto {
         writer.close();
     }
 
-    // ----  Creating number collection  ----------------------------------------------
+    // ---- Creating number collection  ----------------------------------------------
     public void init(Integer numbersList) {
         numbers = new LinkedList<Integer>();
         for (int i = 1; i < numbersList + 1; i++) {
@@ -70,7 +73,7 @@ class Lotto {
         }
     }
 
-    // ----  Number draw  ----------------------------------------------
+    // ---- Number draw  ----------------------------------------------
     public Integer draw() {
         Integer randomNumber = (int) (Math.random() * numberSize);
         randomNumber = numbers.get(randomNumber);
