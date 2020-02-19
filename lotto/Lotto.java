@@ -25,10 +25,13 @@ class Lotto {
                 numbersToDraw = sc.nextInt();
                 retry = false;
             } catch (Exception e) {
-                System.out.println("It's not valid value");
+                System.out.println("It's not valid value, try again..");
                 retry = true;
             }
-        } while (retry == true);
+            if (numbersToDraw < 0 && retry == false) {
+                System.out.println("Wrong Value. Value should be positive, try again.. ");
+            }
+        } while (numbersToDraw < 0 || retry == true);
 
         do {
             try {
@@ -37,25 +40,31 @@ class Lotto {
                 numberList = sc.nextInt();
                 retry = false;
             } catch (Exception e) {
-                System.out.println("It's not valid value");
+                System.out.println("It's not valid value, try again..");
                 retry = true;
             }
-        } while (retry == true);
+            if (numberList < 0 && retry == false) {
+                System.out.println("Wrong Value. Value should be positive, try again.. ");
+            }
+        } while (numberList < 0 || retry == true);
 
         init(numberList);
         System.out.println("Number pool: " + numbers);
-        System.out.println("\n" + "Your " + numbersToDraw + " draw numbers from number pool are:");
 
-        List<Integer> sortedNumbers = new ArrayList<>();
+
         // ---- Sort numbers from minimum and displays them in an interval of one second
+        System.out.println("\n" + "Your " + numbersToDraw + " draw numbers from number pool are:");
+        List<Integer> sortedNumbers = new ArrayList<>();
         for (int i = 0; i < numbersToDraw; i++) {
             sortedNumbers.add(draw());
         }
-        Collections.sort(sortedNumbers);
         for (int i = 0; i < numbersToDraw; i++) {
             Thread.sleep(1000);
             System.out.println(sortedNumbers.get(i));
         }
+        Collections.sort(sortedNumbers);
+
+        System.out.println("\n" + "Your " + numbersToDraw + " draw numbers from number pool are: " + sortedNumbers);
 
         // ---- Writes out numbers to lottoNumbers.txt
         File file = new File("lottoNumbers.txt");
